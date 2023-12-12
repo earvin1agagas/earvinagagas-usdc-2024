@@ -23,7 +23,7 @@
      * return the appropriate object here. */
 
     var result = {
-        "SearchTerm": "",
+        "SearchTerm": searchTerm,
         "Results": []
     };
 
@@ -34,7 +34,7 @@
             const{ Page, Line, Text } = page;
             //CASE SENSITIVE!!!!!
             const searchTermIndex = Text.indexOf(searchTerm);
-
+            
             if(searchTermIndex !== -1) {
                 result.Results.push({
                     ISBN,
@@ -44,7 +44,7 @@
             }
         });
     });
-    
+    console.log(result);
     return result; 
 }
 
@@ -72,7 +72,10 @@ const twentyLeaguesIn = [
         ] 
     }
 ]
-const twentyLeaguesOut = findSearchTermInBooks("the", twentyLeaguesIn);
+//I have a variable here to make it easier than changing the word manually for each unit test
+const mySearchTerm = "The";
+const twentyLeaguesOut = findSearchTermInBooks(mySearchTerm, twentyLeaguesIn);
+
 /** Example output object */
 // const twentyLeaguesOut = {
 //     "SearchTerm": "the",
@@ -102,7 +105,7 @@ const twentyLeaguesOut = findSearchTermInBooks("the", twentyLeaguesIn);
  * */
 
 /** We can check that, given a known input, we get a known output. */
-const test1result = findSearchTermInBooks("the", twentyLeaguesIn);
+const test1result = findSearchTermInBooks(mySearchTerm, twentyLeaguesIn);
 if (JSON.stringify(twentyLeaguesOut) === JSON.stringify(test1result)) {
     console.log("PASS: Test 1");
 } else {
@@ -112,11 +115,28 @@ if (JSON.stringify(twentyLeaguesOut) === JSON.stringify(test1result)) {
 }
 
 /** We could choose to check that we get the right number of results. */
-const test2result = findSearchTermInBooks("the", twentyLeaguesIn); 
+const test2result = findSearchTermInBooks(mySearchTerm, twentyLeaguesIn); 
 if (test2result.Results.length == 1) {
     console.log("PASS: Test 2");
 } else {
     console.log("FAIL: Test 2");
     console.log("Expected:", twentyLeaguesOut.Results.length);
     console.log("Received:", test2result.Results.length);
+}
+//Case sensitivity test
+const test3result = findSearchTermInBooks(mySearchTerm, twentyLeaguesIn);
+if(test3result.SearchTerm === "The") {
+    console.log("PASS: Test 3");
+} else {
+    console.log("FAIL: Test 3");
+    console.log("Expected: The");
+    console.log("Received: ", test3result.SearchTerm);
+}
+//Negative unit test for null search term!
+const test4result = findSearchTermInBooks(null, twentyLeaguesIn);
+if (test4result.Results.length === 0) {
+    console.log("PASS: Test 4");
+} else {
+    console.log("FAIL: Test 4");
+    console.log("Received:", test4result.SearchTerm);
 }
