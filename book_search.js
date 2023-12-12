@@ -26,6 +26,24 @@
         "SearchTerm": "",
         "Results": []
     };
+
+    scannedTextObj.forEach(book => {
+        const{ ISBN, Content } = book;
+
+        Content.forEach(page => {
+            const{ Page, Line, Text } = page;
+            //CASE SENSITIVE!!!!!
+            const searchTermIndex = Text.indexOf(searchTerm);
+
+            if(searchTermIndex !== -1) {
+                result.Results.push({
+                    ISBN,
+                    Page,
+                    Line: Line + 1,
+                });
+            }
+        });
+    });
     
     return result; 
 }
@@ -54,18 +72,18 @@ const twentyLeaguesIn = [
         ] 
     }
 ]
-    
+const twentyLeaguesOut = findSearchTermInBooks("the", twentyLeaguesIn);
 /** Example output object */
-const twentyLeaguesOut = {
-    "SearchTerm": "the",
-    "Results": [
-        {
-            "ISBN": "9780000528531",
-            "Page": 31,
-            "Line": 9
-        }
-    ]
-}
+// const twentyLeaguesOut = {
+//     "SearchTerm": "the",
+//     "Results": [
+//         {
+//             "ISBN": "9780000528531",
+//             "Page": 31,
+//             "Line": 9
+//         }
+//     ]
+// }
 
 /*
  _   _ _   _ ___ _____   _____ _____ ____ _____ ____  
